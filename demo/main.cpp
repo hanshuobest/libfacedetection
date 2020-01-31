@@ -12,7 +12,7 @@
 #include <chrono>
 #include <unistd.h>
 #include "facedetectcnn.h"
-
+#include <math.h>
 //define the buffer size. Do not change the size!
 #define DETECT_BUFFER_SIZE 0x20000
 using namespace cv;
@@ -23,6 +23,7 @@ struct Bbox
     int y;
     int w;
     int h;
+    float score;
 };
 
 int facedetection(cv::Mat &src , std::vector<Bbox> &bb);
@@ -87,18 +88,18 @@ int facedetection(cv::Mat &src , std::vector<Bbox> &bb)
         int y = p[1];
         int w = p[2];
         int h = p[3];
-        int neighbors = p[4];
-        int angle = p[5];
+        float score = std::sqrt(float(p[4])/100);
 
-//        std::cout << "neighbors: " << neighbors << "----" << "angle: " << angle << std::endl;
+        std::cout << "score: " << score << std::endl;
 
-        if (neighbors == 99)
+        if (score >= 0.8)
         {
             Bbox face_boxes;
             face_boxes.x = x;
             face_boxes.y = y;
             face_boxes.w = w;
             face_boxes.h = h;
+            face_boxes.score = score;
 
             bb.push_back(face_boxes);
         }
@@ -116,5 +117,7 @@ void drawRect(cv::Mat &src , std::vector<Bbox> &boxes , cv::Scalar color)
         int w = bb.w;
         int h = bb.h;
         cv::rectangle(src , cv::Rect(x , y , w , h) , color , 2);
+        std::string text = std::to_string(bb.score);
+        cv::putText(src , text , cv::Point(x , y) , cv::FONT_HERSHEY_SIMPLEX , 0.6 , cv::Scalar(0 , 0 , 255));
     }
 }

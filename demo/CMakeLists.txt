@@ -42,6 +42,10 @@ FIND_PACKAGE( OpenMP )
 
 include_directories(/Users/han/Deeplearning/libfacedetection/src)
 add_executable(${PROJECT_NAME} "main.cpp")
+# 编译成静态库
+#add_library(${PROJECT_NAME} STATIC "main.cpp")
+# 编译成动态库
+#add_library(${PROJECT_NAME} SHARED "main.cpp")
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} LINK_PUBLIC ${OpenCV_LIBS} pthread ${libfacedetection_LIBS})
 
 if(OpenMP_CXX_FOUND)
