@@ -1,3 +1,4 @@
+
 /*********************************************************
  * @brief         libfacedetection人脸检测demo
  * @Inparam
@@ -26,7 +27,9 @@ struct Bbox
     float score;
 };
 
-int facedetection(cv::Mat &src, std::vector<Bbox> &bb);
+static bool preprocess(cv::Mat &frame, const cv::Size re_size = cv::Size(640, 480), bool flip_flag = true);
+
+static int facedetection(cv::Mat &src, std::vector<Bbox> &bb);
 
 inline void drawRect(cv::Mat &src, std::vector<Bbox> &boxes, cv::Scalar color = cv::Scalar(0, 255, 0));
 
@@ -40,8 +43,8 @@ int main(int argc, char *argv[])
 
     std::string filename = argv[1];
     cv::Mat frame = cv::imread(filename);
-    cv::resize(frame, frame, cv::Size(640, 480));
-    cv::flip(frame, frame, 1);
+   
+    preprocess(frame , cv::Size(640, 480) , true);
     std::vector<Bbox> vec_boxes;
 
     auto start_time = std::chrono::steady_clock::now();
@@ -58,6 +61,22 @@ int main(int argc, char *argv[])
     cv::waitKey(0);
 
     return 0;
+}
+
+bool preprocess(cv::Mat &frame, const cv::Size re_size, bool flip_flag)
+{
+    if (!frame.data)
+    {
+        std::cerr << "read image is null\n";
+        return false;
+    }
+    cv::resize(frame, frame , re_size);
+    if (flip_flag)
+    {
+        cv::flip(frame, frame, 1);
+    }
+
+    return true;
 }
 
 int facedetection(cv::Mat &src, std::vector<Bbox> &bb)
