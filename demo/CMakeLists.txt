@@ -34,19 +34,25 @@ else ()
     endif ()
 endif ()
 #set(OpenCV_DIR /usr/local/Cellar/opencv/4.2.0/lib/cmake/opencv4)
-set(libfacedetection_INCLUDE_DIRS /Users/han/Deeplearning/libfacedetection/src)
-set(libfacedetection_LIBS /home/han/project/git_project/libfacedetection/build/libfacedetection.a)
+set(libfacedetection_INCLUDE_DIRS ../src/)
+set(libfacedetection_LIBS /home/han/data/project/libfacedetection/build/libfacedetection.a)
 FIND_PACKAGE( OpenCV )
 INCLUDE_DIRECTORIES( ${OpenCV_INCLUDE_DIRS} )
 FIND_PACKAGE( OpenMP )
 
-include_directories(/home/han/project/git_project/libfacedetection/src)
+include_directories( ../src/ )
+include_directories( /home/han/3rdparty/stlplus3/filesystemSimplified )
+
+
+list(APPEND ALL_TARGET_LIBRARIES ${OpenCV_LIBS} )
+list(APPEND ALL_TARGET_LIBRARIES /home/han/3rdparty/stlplus3/build/libopenMVG_stlplus.a)
+
 add_executable(${PROJECT_NAME} "main.cpp")
 # 编译成静态库
 #add_library(${PROJECT_NAME} STATIC "main.cpp")
 # 编译成动态库
 #add_library(${PROJECT_NAME} SHARED "main.cpp")
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} LINK_PUBLIC ${OpenCV_LIBS} pthread ${libfacedetection_LIBS})
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} LINK_PUBLIC ${ALL_TARGET_LIBRARIES} pthread ${libfacedetection_LIBS})
 
 if(OpenMP_CXX_FOUND)
     target_link_libraries(${PROJECT_NAME} PUBLIC OpenMP::OpenMP_CXX)
