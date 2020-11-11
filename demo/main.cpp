@@ -109,25 +109,6 @@ int main(int argc, char *argv[])
         count++;
     }
 
-    // std::string filename = argv[1];
-    // cv::Mat frame = cv::imread(filename);
-
-    // preprocess(frame, cv::Size(640, 480), true);
-    // std::vector<Bbox> vec_boxes;
-
-    // auto start_time = std::chrono::steady_clock::now();
-    // facedetection(frame, vec_boxes);
-    // auto end_time = std::chrono::steady_clock::now();
-    // auto cost_time = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
-    // std::cout << "cost time: " << cost_time << std::endl;
-    // int fps = 1000 / cost_time;
-    // drawRect(frame, vec_boxes);
-
-    // std::string text = "fps:" + std::to_string(fps);
-    // cv::putText(frame, text, cv::Point(20, 50), cv::FONT_HERSHEY_SIMPLEX, 1, cv::Scalar(255, 0, 0));
-    // cv::imshow("frame", frame);
-    // cv::waitKey(0);
-
     return 0;
 }
 
